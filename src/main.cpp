@@ -50,8 +50,7 @@ void drawRandomPixels() {
     SDL_DestroyTexture(screenTexture);
 }
 
-int main(int argc, char* argv[]) {
-
+void sdl_simple_init(){
     SDL_Init(SDL_INIT_VIDEO);
     SDL_CreateWindowAndRenderer(NES_WIDTH, NES_HEIGHT, 0, &window, &renderer);
 
@@ -61,6 +60,12 @@ int main(int argc, char* argv[]) {
         SDL_Log("SDL_CreateRGBSurfaceWithFormat() failed: %s", SDL_GetError());
         exit(1);
     }
+}
+
+int main(int argc, char* argv[]) {
+    sdl_simple_init();
+    InfoNES_Load("nullptr");
+    InfoNES_Main();
 
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop(d, 0, 1);

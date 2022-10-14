@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.7)
 
 project(InfoNES-port)
 
-include_directories(..)
+include_directories(.)
+include_directories(InfoNES)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/InfoNES)
 
-#add_subdirectory(${CMAKE_SOURCE_DIR}/src/InfoNES/mapper)
 aux_source_directory(${CMAKE_SOURCE_DIR} SRC)
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten")
