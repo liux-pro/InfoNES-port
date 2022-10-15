@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.7)
 
 project(InfoNES-port)
 
+#set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
+
 include_directories(.)
 include_directories(InfoNES)
 

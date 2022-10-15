@@ -22,19 +22,10 @@ WORD NesPalette[64] = {0x738e, 0x20d1, 0x15, 0x4013, 0x880e, 0xa802, 0xa000, 0x7
                        0xf5c7, 0x8682, 0x4ec9, 0x5fd3, 0x75b, 0x0, 0x0, 0x0,
                        0xffdf, 0xaf1f, 0xc69f, 0xd65f, 0xfe1f, 0xfe1b, 0xfdd6, 0xfed5,
                        0xff14, 0xe7d4, 0xaf97, 0xb7d9, 0x9fde, 0x0, 0x0, 0x0};
-//WORD NesPalette[ 64 ] =
-//        {
-//                0x39ce, 0x1071, 0x0015, 0x2013, 0x440e, 0x5402, 0x5000, 0x3c20,
-//                0x20a0, 0x0100, 0x0140, 0x00e2, 0x0ceb, 0x0000, 0x0000, 0x0000,
-//                0x5ef7, 0x01dd, 0x10fd, 0x401e, 0x5c17, 0x700b, 0x6ca0, 0x6521,
-//                0x45c0, 0x0240, 0x02a0, 0x0247, 0x0211, 0x0000, 0x0000, 0x0000,
-//                0x7fff, 0x1eff, 0x2e5f, 0x223f, 0x79ff, 0x7dd6, 0x7dcc, 0x7e67,
-//                0x7ae7, 0x4342, 0x2769, 0x2ff3, 0x03bb, 0x0000, 0x0000, 0x0000,
-//                0x7fff, 0x579f, 0x635f, 0x6b3f, 0x7f1f, 0x7f1b, 0x7ef6, 0x7f75,
-//                0x7f94, 0x73f4, 0x57d7, 0x5bf9, 0x4ffe, 0x0000, 0x0000, 0x0000
-//        };
+
 /* Menu screen */
 //相当于退出按钮，只要返回-1,模拟器就退出其内部循环
+//这个东西貌似没用阿，只有在启动模拟器时候会调用一次，谁会在启动时候就推出呢。
 int InfoNES_Menu() {
     return 0;
 }
@@ -84,50 +75,8 @@ void InfoNES_ReleaseRom() {
 
 /* Transfer the contents of work frame on the screen */
 void InfoNES_LoadFrame() {
-    static int i = 0;
-    i++;
-    if (i == 200) {
-        {
-            unsigned char img[NES_DISP_HEIGHT * NES_DISP_WIDTH * 3] = {0};
-
-            for (int i = 0; i < NES_DISP_HEIGHT * NES_DISP_WIDTH; ++i) {
 
 
-                //获取高字节的5个bit
-                unsigned char R = (WorkFrame[i] & 0xF800) >> 8;
-                //获取中间5个bit
-                unsigned char G = (WorkFrame[i] & 0x07E0) >> 3;
-                //获取低字节5个bit
-                unsigned char B = (WorkFrame[i] & 0x001F) << 3;
-
-                img[i * 3 + 0] = R | (R >> 5);
-                img[i * 3 + 1] = G | (G >> 6);
-                img[i * 3 + 2] = B | (B >> 5);
-//            //获取高字节的5个bit
-//            unsigned char R = (WorkFrame[i] & 0x7C00)>>7;
-//            //获取中间5个bit
-//            unsigned char G = (WorkFrame[i] & 0x03E0)>>2;
-//            //获取低字节5个bit
-//            unsigned char B = (WorkFrame[i] & 0x001F)<<3;
-//
-//                img[i * 3 + 0] = R | (R >> 5);
-//                img[i * 3 + 1] = G | (G >> 5);
-//                img[i * 3 + 2] = B | (B >> 5);
-
-            }
-            unsigned char img2[NES_DISP_HEIGHT * NES_DISP_WIDTH * 3] = {0};
-            //bmp从左下角开始一地个像素
-            for (int i = 0; i < NES_DISP_HEIGHT * NES_DISP_WIDTH; ++i) {
-                img2[i * 3 + 0] = img[((NES_DISP_HEIGHT * NES_DISP_WIDTH) - i - 1) * 3 + 0];
-                img2[i * 3 + 1] = img[((NES_DISP_HEIGHT * NES_DISP_WIDTH) - i - 1) * 3 + 1];
-                img2[i * 3 + 2] = img[((NES_DISP_HEIGHT * NES_DISP_WIDTH) - i - 1) * 3 + 2];
-            }
-            WriteBMP(img2, "test.bmp", NES_DISP_WIDTH, NES_DISP_HEIGHT);
-            exit(0);
-
-        }
-
-    }
 }
 
 /* Get a joypad state */

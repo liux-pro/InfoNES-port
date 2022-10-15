@@ -6,8 +6,6 @@
 #include "InfoNES/InfoNES_System.h"
 #include "InfoNES/InfoNES.h"
 
-#define NES_WIDTH 256
-#define NES_HEIGHT 240
 
 SDL_Window *window;
 SDL_Renderer *renderer;
@@ -32,7 +30,7 @@ void drawRandomPixels() {
 
     auto * pixels = static_cast<Uint8 *>(surface->pixels);
 
-    for (int i=0; i < NES_WIDTH*NES_HEIGHT; i++) {
+    for (int i=0; i < NES_DISP_HEIGHT*NES_DISP_HEIGHT; i++) {
 
         pixels[i*2] = 0b11100000;
         pixels[i*2+1] = 0b00000111;
@@ -52,10 +50,10 @@ void drawRandomPixels() {
 
 void sdl_simple_init(){
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_CreateWindowAndRenderer(NES_WIDTH, NES_HEIGHT, 0, &window, &renderer);
+    SDL_CreateWindowAndRenderer(NES_DISP_WIDTH, NES_DISP_HEIGHT, 0, &window, &renderer);
 
     //flag 和 depth 实际上没用，并且它们会在sdl3中被删除
-    surface = SDL_CreateRGBSurfaceWithFormat(0, NES_WIDTH, NES_HEIGHT, 0, SDL_PIXELFORMAT_RGB565);
+    surface = SDL_CreateRGBSurfaceWithFormat(0, NES_DISP_WIDTH, NES_DISP_HEIGHT, 0, SDL_PIXELFORMAT_RGB565);
     if (surface == NULL) {
         SDL_Log("SDL_CreateRGBSurfaceWithFormat() failed: %s", SDL_GetError());
         exit(1);
