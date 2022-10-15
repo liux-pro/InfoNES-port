@@ -75,8 +75,7 @@ void InfoNES_ReleaseRom() {
 
 /* Transfer the contents of work frame on the screen */
 void InfoNES_LoadFrame() {
-
-
+    //没用了
 }
 
 /* Get a joypad state */
@@ -101,9 +100,9 @@ void InfoNES_DebugPrint(char *pszMsg) {
     fprintf(stderr, "%s\n", pszMsg);
 }
 
-
-/* Wait */
+//这个指的是过去电视的电子枪扫描线，每一帧这个函数都会被调用240次，也就是换行240次。
 void InfoNES_Wait() {
+    //没用了
 }
 
 

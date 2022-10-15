@@ -13,9 +13,8 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/InfoNES)
 aux_source_directory(${CMAKE_SOURCE_DIR} SRC)
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten")
-    # TODO(amitp): I don't know how to set this properly with add_compile_options
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2")
-    set(SDL2_LIBRARIES "-s USE_SDL=2")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -sUSE_SDL=2")
+    set(SDL2_LIBRARIES "-sUSE_SDL=2")
     set(CMAKE_EXECUTABLE_SUFFIX ".html")
 else ()
     find_package(SDL2 REQUIRED)

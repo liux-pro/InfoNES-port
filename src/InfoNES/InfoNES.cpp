@@ -40,7 +40,8 @@
 #include "InfoNES_Mapper.h"
 #include "InfoNES_pAPU.h"
 #include "K6502.h"
-
+//标记生成完成一帧，退出循环
+bool frame_ready = false;
 /*-------------------------------------------------------------------*/
 /*  NES resources                                                    */
 /*-------------------------------------------------------------------*/
@@ -643,6 +644,13 @@ void InfoNES_Cycle()
 
     // HSYNC Wait
     InfoNES_Wait();
+
+    //一帧画面已经生成了，退出循环。
+    if (frame_ready){
+        frame_ready= false;
+        return;
+    }
+
   }
 }
 
@@ -707,6 +715,8 @@ int InfoNES_HSync()
       if ( FrameCnt == 0 )
       {
         // Transfer the contents of work frame on the screen
+        // 代码走到这里代表着一帧数据生成完成。
+        frame_ready= true;
         InfoNES_LoadFrame();
         
 #if 0

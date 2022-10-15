@@ -11,10 +11,11 @@ SDL_Window *window;
 SDL_Renderer *renderer;
 SDL_Surface *surface;
 SDL_Event event;
+SDL_Texture *texture;
 bool quit;
 
 
-void drawRandomPixels() {
+void loop() {
     while (SDL_PollEvent(&event))
     {
         // window close event
@@ -30,22 +31,19 @@ void drawRandomPixels() {
 
     auto * pixels = static_cast<Uint8 *>(surface->pixels);
 
-    for (int i=0; i < NES_DISP_HEIGHT*NES_DISP_HEIGHT; i++) {
-
-        pixels[i*2] = 0b11100000;
-        pixels[i*2+1] = 0b00000111;
-
-    }
+    /*
+     * InfoNES
+     */
+    InfoNES_Cycle();
+    memcpy(pixels,WorkFrame,NES_DISP_WIDTH*NES_DISP_HEIGHT*2);
 
     if (SDL_MUSTLOCK(surface)) SDL_UnlockSurface(surface);
 
-    SDL_Texture *screenTexture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_UpdateTexture(texture, nullptr,surface->pixels,surface->pitch);
 
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, screenTexture, nullptr, nullptr);
+    SDL_RenderCopy(renderer, texture, nullptr, nullptr);
     SDL_RenderPresent(renderer);
-
-    SDL_DestroyTexture(screenTexture);
 }
 
 void sdl_simple_init(){
@@ -58,19 +56,26 @@ void sdl_simple_init(){
         SDL_Log("SDL_CreateRGBSurfaceWithFormat() failed: %s", SDL_GetError());
         exit(1);
     }
+    texture  = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_RGB565,SDL_TEXTUREACCESS_STREAMING,NES_DISP_WIDTH,NES_DISP_HEIGHT);
 }
 
 int main(int argc, char* argv[]) {
     sdl_simple_init();
-    InfoNES_Load("nullptr");
-    InfoNES_Main();
+    InfoNES_Load(nullptr);
+
+    InfoNES_Init();
+
 
 #ifdef __EMSCRIPTEN__
-    emscripten_set_main_loop(d, 0, 1);
+    emscripten_set_main_loop(loop, 0, 1);
 #endif
 
 #ifndef __EMSCRIPTEN__
     // repeatedly calling mainloop on desktop
-    while(!quit) drawRandomPixels();
+    while(!quit) {
+        loop();
+        SDL_Delay(16);
+    };
 #endif
+    InfoNES_Fin();
 }
