@@ -4,7 +4,6 @@
 #include "string.h"
 #include "stdint.h"
 #include "stdio.h"
-#include "bmp.h"
 
 extern uint8_t rom[];
 
