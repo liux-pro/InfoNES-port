@@ -4,6 +4,9 @@ project(InfoNES-port)
 
 #set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
+# 音频部分的开关
+#set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -DENABLE_NES_AUDIO=1")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_NES_AUDIO=1")
 
 include_directories(.)
 include_directories(InfoNES)

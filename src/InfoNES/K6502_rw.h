@@ -128,6 +128,7 @@ static inline BYTE K6502_Read( WORD wAddr )
       else
       if ( wAddr == 0x4015 )
       {
+#if(ENABLE_NES_AUDIO)
         // APU control
         byRet = APU_Reg[ 0x4015 ];
 	if ( ApuC1Atl > 0 ) byRet |= (1<<0);
@@ -138,7 +139,7 @@ static inline BYTE K6502_Read( WORD wAddr )
 	  if ( ApuC3Llc > 0 ) byRet |= (1<<2);
 	}
 	if ( ApuC4Atl > 0 ) byRet |= (1<<3);
-
+#endif
 	// FrameIRQ
         APU_Reg[ 0x4015 ] &= ~0x40;
         return byRet;
@@ -381,8 +382,10 @@ static inline void K6502_Write( WORD wAddr, BYTE byData )
         case 0x12:
         case 0x13:
           // Call Function corresponding to Sound Registers
+#if(ENABLE_NES_AUDIO)
           if ( !APU_Mute )
             pAPUSoundRegs[ wAddr & 0x1f ]( wAddr, byData );
+#endif
           break;
 
         case 0x14:  /* 0x4014 */
@@ -416,7 +419,9 @@ static inline void K6502_Write( WORD wAddr, BYTE byData )
           break;
 
         case 0x15:  /* 0x4015 */
+#if(ENABLE_NES_AUDIO)
           InfoNES_pAPUWriteControl( wAddr, byData );
+#endif
 #if 0
           /* Unknown */
           if ( byData & 0x10 ) 

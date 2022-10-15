@@ -1,3 +1,4 @@
+#if(ENABLE_NES_AUDIO)
 /*===================================================================*/
 /*                                                                   */
 /*  InfoNES_pAPU.cpp : InfoNES Sound Emulation Function              */
@@ -1066,3 +1067,4 @@ void InfoNES_pAPUDone(void)
 /*
  * End of InfoNES_pAPU.cpp
  */
+#endif

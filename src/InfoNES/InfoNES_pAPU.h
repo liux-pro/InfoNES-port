@@ -1,3 +1,4 @@
+#if(ENABLE_NES_AUDIO)
 /*===================================================================*/
 /*                                                                   */
 /*  InfoNES_pAPU.h : InfoNES Sound Emulation Function                */
@@ -198,3 +199,4 @@ extern BYTE  ApuC4Atl;
 /*
  * End of InfoNES_pAPU.h
  */
+#endif

@@ -292,8 +292,10 @@ void InfoNES_Fin()
  *  Remarks
  *    Release resources
  */
-  // Finalize pAPU
+#if(ENABLE_NES_AUDIO)
+    // Finalize pAPU
   InfoNES_pAPUDone();
+#endif
 
   // Release a memory for ROM
   InfoNES_ReleaseRom();
@@ -420,9 +422,9 @@ int InfoNES_Reset()
   /*-------------------------------------------------------------------*/
   /*  Initialize pAPU                                                  */
   /*-------------------------------------------------------------------*/
-
+#if(ENABLE_NES_AUDIO)
   InfoNES_pAPUInit();
-
+#endif
   /*-------------------------------------------------------------------*/
   /*  Initialize Mapper                                                */
   /*-------------------------------------------------------------------*/
@@ -736,11 +738,11 @@ int InfoNES_HSync()
 
       // Reset latch flag
       PPU_Latch_Flag = 0;
-
+#if(ENABLE_NES_AUDIO)
       // pAPU Sound function in V-Sync
       if ( !APU_Mute )
         InfoNES_pAPUVsync();
-
+#endif
       // A mapper function in V-Sync
       MapperVSync();
 
