@@ -1,4 +1,3 @@
-#include <cstdlib>
 #include "InfoNES_System.h"
 #include "InfoNES.h"
 #include "string.h"

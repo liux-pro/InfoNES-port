@@ -2,9 +2,9 @@
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
-#include <cstdlib>
 #include "InfoNES/InfoNES_System.h"
 #include "InfoNES/InfoNES.h"
+#include "stdbool.h"
 
 
 SDL_Window *window;
@@ -29,7 +29,7 @@ void loop() {
 
     if (SDL_MUSTLOCK(surface)) SDL_LockSurface(surface);
 
-    auto * pixels = static_cast<Uint8 *>(surface->pixels);
+    Uint8* pixels = (Uint8 *)(surface->pixels);
 
     /*
      * InfoNES
@@ -39,10 +39,10 @@ void loop() {
 
     if (SDL_MUSTLOCK(surface)) SDL_UnlockSurface(surface);
 
-    SDL_UpdateTexture(texture, nullptr,surface->pixels,surface->pitch);
+    SDL_UpdateTexture(texture, NULL,surface->pixels,surface->pitch);
 
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, texture, nullptr, nullptr);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
 }
 
@@ -61,7 +61,7 @@ void sdl_simple_init(){
 
 int main(int argc, char* argv[]) {
     sdl_simple_init();
-    InfoNES_Load(nullptr);
+    InfoNES_Load(NULL);
 
     InfoNES_Init();
 
