@@ -2,11 +2,13 @@ cmake_minimum_required(VERSION 3.7)
 
 project(InfoNES-port)
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
-#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
 # 音频部分的开关
 #set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -DENABLE_NES_AUDIO=1")
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_NES_AUDIO=1")
+#set(SDL2_DIR D:\\\\C_LIBS\\SDL2-devel-2.24.1-mingw\\SDL2-2.24.1\\cmake\\)
+
 
 include_directories(.)
 include_directories(InfoNES)

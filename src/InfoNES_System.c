@@ -6,6 +6,12 @@
 
 extern uint8_t rom[];
 
+/* Pad state */
+DWORD dwPad1=0;
+DWORD dwPad2=0;
+DWORD dwSystem=0;
+
+
 /* Palette data */
 /* 引入调色板，nes内部只有64种颜色，每种占2字节，输出帧的时候只会出现这些颜色
  * 这里把他设置成rgb565*/
@@ -78,6 +84,9 @@ void InfoNES_LoadFrame() {
 
 /* Get a joypad state */
 void InfoNES_PadState(DWORD *pdwPad1, DWORD *pdwPad2, DWORD *pdwSystem) {
+    *pdwPad1 = dwPad1;
+    *pdwPad2 = dwPad2;
+    *pdwSystem = dwSystem;
 }
 
 
