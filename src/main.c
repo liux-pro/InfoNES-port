@@ -111,7 +111,8 @@ void loop() {
 
 void sdl_simple_init() {
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_CreateWindowAndRenderer(NES_DISP_WIDTH, NES_DISP_HEIGHT, 0, &window, &renderer);
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+    SDL_CreateWindowAndRenderer(NES_DISP_WIDTH*3, NES_DISP_HEIGHT*3, SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED , &window, &renderer);
 
     //flag 和 depth 实际上没用，并且它们会在sdl3中被删除
     surface = SDL_CreateRGBSurfaceWithFormat(0, NES_DISP_WIDTH, NES_DISP_HEIGHT, 0, SDL_PIXELFORMAT_RGB565);
