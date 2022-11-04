@@ -31,28 +31,28 @@ void loop() {
         switch (e.type) {
             case SDL_KEYDOWN:
                 switch (e.key.keysym.sym) {
-                    case SDLK_RIGHT:
+                    case SDLK_d:
                         dwPad1 |= (1 << 7);
                         break;
-                    case SDLK_LEFT:
+                    case SDLK_a:
                         dwPad1 |= (1 << 6);
                         break;
-                    case SDLK_DOWN:
+                    case SDLK_s:
                         dwPad1 |= (1 << 5);
                         break;
-                    case SDLK_UP:
+                    case SDLK_w:
                         dwPad1 |= (1 << 4);
                         break;
-                    case SDLK_s:
+                    case SDLK_1:
                         dwPad1 |= (1 << 3);
                         break;    /* Start */
-                    case SDLK_a:
+                    case SDLK_2:
                         dwPad1 |= (1 << 2);
                         break;    /* Select */
-                    case SDLK_z:
+                    case SDLK_j:
                         dwPad1 |= (1 << 1);
                         break;    /* 'B' */
-                    case SDLK_x:
+                    case SDLK_k:
                         dwPad1 |= (1 << 0);
                         break;    /* 'A' */
                 } /* keydown */
@@ -60,28 +60,28 @@ void loop() {
 
             case SDL_KEYUP:
                 switch (e.key.keysym.sym) {
-                    case SDLK_RIGHT:
+                    case SDLK_d:
                         dwPad1 &= ~(1 << 7);
                         break;
-                    case SDLK_LEFT:
+                    case SDLK_a:
                         dwPad1 &= ~(1 << 6);
                         break;
-                    case SDLK_DOWN:
+                    case SDLK_s:
                         dwPad1 &= ~(1 << 5);
                         break;
-                    case SDLK_UP:
+                    case SDLK_w:
                         dwPad1 &= ~(1 << 4);
                         break;
-                    case SDLK_s:
+                    case SDLK_1:
                         dwPad1 &= ~(1 << 3);
                         break;   /* Start */
-                    case SDLK_a:
+                    case SDLK_2:
                         dwPad1 &= ~(1 << 2);
                         break;   /* Select */
-                    case SDLK_z:
+                    case SDLK_j:
                         dwPad1 &= ~(1 << 1);
                         break;   /* 'B' */
-                    case SDLK_x:
+                    case SDLK_k:
                         dwPad1 &= ~(1 << 0);
                         break;   /* 'A' */
                 } /* keyup */
