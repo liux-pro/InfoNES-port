@@ -1,15 +1,17 @@
+#include <SDL.h>
 #include "InfoNES_System.h"
 #include "InfoNES.h"
 #include "string.h"
 #include "stdint.h"
 #include "stdio.h"
+#include "SDL_log.h"
 
 extern uint8_t rom[];
 
 /* Pad state */
-DWORD dwPad1=0;
-DWORD dwPad2=0;
-DWORD dwSystem=0;
+DWORD dwPad1 = 0;
+DWORD dwPad2 = 0;
+DWORD dwSystem = 0;
 
 
 /* Palette data */
@@ -117,20 +119,56 @@ void InfoNES_Wait() {
 void InfoNES_SoundInit() {
 }
 
+/* For Sound Emulation */
+BYTE final_wave[2048];
+int waveptr;
+int wavflag;
+int wavdone;
+
+void waveout(void *udat, BYTE *stream, int len) {
+    if (!wavdone) {
+        /* we always expect that len is 1024 */
+        memcpy(stream, &final_wave[(wavflag - 1) << 10], len);
+        wavflag = 0;
+        wavdone = 1;
+    }
+}
+
+SDL_AudioSpec audio_spec;
+SDL_AudioDeviceID audio_device;
 
 /* Sound Open */
 int InfoNES_SoundOpen(int samples_per_sync, int sample_rate) {
+    // the representation of our audio device in SDL:
+
+    // opening an audio device:
+    SDL_zero(audio_spec);
+    audio_spec.freq = 44100;
+    audio_spec.format = AUDIO_U8;
+    audio_spec.channels = 1;
+    audio_spec.samples = 1024;
+    audio_spec.callback = NULL;
+
+    audio_device = SDL_OpenAudioDevice(
+            NULL, 0, &audio_spec, NULL, 0);
+    SDL_PauseAudioDevice(audio_device, 0);
+
+    /* Successful */
     return 1;
 }
 
-
 /* Sound Close */
-void InfoNES_SoundClose() {
+void InfoNES_SoundClose(void) {
+    SDL_CloseAudio();
 }
 
-
-/* Sound Output 5 Waves - 2 Pulse, 1 Triangle, 1 Noise, 1 DPCM */
+/* Sound Output 5 Waves - 2 Pulse, 1 Triangle, 1 Noise. 1 DPCM */
 void InfoNES_SoundOutput(int samples, BYTE *wave1, BYTE *wave2, BYTE *wave3, BYTE *wave4, BYTE *wave5) {
+    for (int j = 0; j < samples; ++j) {
+        uint8_t temp = (wave1[j] + wave2[j] + wave3[j] + wave4[j] + wave5[j]) / 5;
+        SDL_QueueAudio(audio_device, &temp, 1);
+    }
+    // unpausing the audio device (starts playing):
 }
 
 /* Print system message */

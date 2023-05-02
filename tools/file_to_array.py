@@ -1,4 +1,4 @@
-with open("contra.nes","rb") as fo:
+with open("超级玛莉.NES","rb") as fo:
     read = fo.read()
     with open("rom.c","w") as rom:
         rom.write("#include <stdint.h>\n")

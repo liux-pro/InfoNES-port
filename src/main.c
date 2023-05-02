@@ -110,9 +110,9 @@ void loop() {
 }
 
 void sdl_simple_init() {
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO);
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-    SDL_CreateWindowAndRenderer(NES_DISP_WIDTH*3, NES_DISP_HEIGHT*3, SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED , &window, &renderer);
+    SDL_CreateWindowAndRenderer(NES_DISP_WIDTH * 3, NES_DISP_HEIGHT * 3, SDL_WINDOW_RESIZABLE, &window, &renderer);
 
     //flag 和 depth 实际上没用，并且它们会在sdl3中被删除
     surface = SDL_CreateRGBSurfaceWithFormat(0, NES_DISP_WIDTH, NES_DISP_HEIGHT, 0, SDL_PIXELFORMAT_RGB565);
@@ -124,11 +124,45 @@ void sdl_simple_init() {
                                 NES_DISP_HEIGHT);
 }
 
+uint32_t parts[60];
+Uint32 frameStart;
+
+//把1000毫秒分成60份
+//该函数将一个大小为60的整数数组作为参数，并将0到999分成60个部分，每个部分的大小存储在数组中。
+//该函数首先计算每个部分的理论大小part_size，然后计算剩余的元素 remainder，将它们分配给前 remainder 个部分。
+void split_into_60_parts() {
+    int total = 1000;
+    int num_parts = 60;
+
+    int part_size = total / num_parts;
+    int remainder = total % num_parts;
+    parts[0] = part_size + (0 < remainder ? 1 : 0);
+
+    for (int i = 1; i < num_parts; i++) {
+        parts[i] = parts[i - 1] + part_size + (i < remainder ? 1 : 0);
+    }
+}
+
+static uint32_t frame_index = 0;
+static uint32_t second_index = 0;
+
+uint8_t calc_frame_index() {
+    frame_index++;
+    if (frame_index >= 60) {
+        frame_index = 0;
+        second_index++;
+    }
+    return frame_index;
+}
+
+
 int main(int argc, char *argv[]) {
     sdl_simple_init();
     InfoNES_Load(NULL);
 
     InfoNES_Init();
+    split_into_60_parts();
+    frameStart = SDL_GetTicks();
 
 
 #ifdef __EMSCRIPTEN__
@@ -139,8 +173,12 @@ int main(int argc, char *argv[]) {
     // repeatedly calling mainloop on desktop
     while (!quit) {
         loop();
-        SDL_Delay(16);
-    };
+        calc_frame_index();
+        uint32_t next_time = frameStart + (1000 * second_index) + (parts[frame_index]);
+        while (next_time > SDL_GetTicks()) {
+            SDL_Delay(1);
+        }
+    }
 #endif
     InfoNES_Fin();
 }
